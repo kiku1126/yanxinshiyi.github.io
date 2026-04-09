@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字化非遗文创 — 衍新拾遗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+/* === CSS VARIABLES === */
+:root {
+  --umber: #442117;
+  --parchment: #e9e0d2;
+  --gold: #bda382;
+  --rose: #cab0a5;
+  --sage: #b7b7a7;
+  --umber-90: rgba(68,33,23,0.9);
+  --umber-60: rgba(68,33,23,0.6);
+  --umber-30: rgba(68,33,23,0.3);
+  --umber-10: rgba(68,33,23,0.1);
+  --gold-40: rgba(189,163,130,0.4);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family:'Noto Serif SC','Songti SC',serif;
+  background:var(--parchment); color:var(--umber);
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+a { color:inherit; text-decoration:none; }
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999;
+}
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--parchment); }
+::-webkit-scrollbar-thumb { background:var(--gold); border-radius:3px; }
+
+/* NAV - placeholder, will be filled */
+/* HERO - placeholder */
+/* CATEGORIES - placeholder */
+/* CASES - placeholder */
+/* FOOTER - placeholder */
+
+/* === NAV === */
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  padding:1.5rem 4rem;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(233,224,210,0.92);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 1px 0 var(--umber-10);
+  transition:all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-logo {
+  font-family:'Ma Shan Zheng',cursive; font-size:1.75rem;
+  letter-spacing:0.15em; color:var(--umber);
+}
+.nav-logo img { height:100px; width:auto; display:block; }
+.nav-links { display:flex; gap:2.5rem; align-items:center; }
+.nav-links a {
+  font-size:0.85rem; font-weight:400; letter-spacing:0.12em;
+  color:var(--umber-60); transition:color 0.3s; position:relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px;
+  background:var(--gold); transition:width 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-links a:hover { color:var(--umber); }
+.nav-links a:hover::after { width:100%; }
+.nav-links a.active { color:var(--umber); }
+.nav-links a.active::after { width:100%; }
+.nav-cta {
+  font-size:0.8rem !important; padding:0.6rem 1.8rem;
+  border:1px solid var(--umber-30); transition:all 0.3s !important;
+}
+.nav-cta:hover { background:var(--umber) !important; color:var(--parchment) !important; border-color:var(--umber) !important; }
+.nav-toggle { display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; }
+.nav-toggle span { width:24px; height:1px; background:var(--umber); transition:all 0.3s; }
+@media(max-width:900px){ .nav-toggle{display:flex;} .nav-links{display:none;} .nav{padding:1.2rem 2rem;} .nav-logo img{height:36px;} }
+
+/* === PAGE HERO === */
+.page-hero {
+  padding:10rem 4rem 5rem; text-align:center; position:relative; overflow:hidden;
+}
+.page-hero-bg {
+  position:absolute; inset:0; z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(189,163,130,0.12),transparent),
+    radial-gradient(ellipse 50% 50% at 80% 80%,rgba(202,176,165,0.08),transparent);
+}
+.page-hero-label {
+  font-size:0.7rem; letter-spacing:0.35em; color:var(--gold);
+  margin-bottom:1rem; position:relative; z-index:1;
+  opacity:0; animation:fadeUp 0.8s 0.2s forwards;
+}
+.page-hero-title {
+  font-family:'ZCOOL XiaoWei',serif;
+  font-size:clamp(2.5rem,5vw,4rem); font-weight:400;
+  letter-spacing:0.08em; line-height:1.3; position:relative; z-index:1;
+  opacity:0; animation:fadeUp 0.8s 0.4s forwards;
+}
+.page-hero-title .accent { color:var(--gold); }
+.page-hero-desc {
+  max-width:500px; margin:1.5rem auto 0; font-size:0.95rem;
+  line-height:2; color:var(--umber-60); font-weight:300;
+  position:relative; z-index:1;
+  opacity:0; animation:fadeUp 0.8s 0.6s forwards;
+}
+.page-hero-divider {
+  width:50px; height:1px; background:var(--gold); margin:2rem auto 0;
+  position:relative; z-index:1;
+  opacity:0; animation:fadeUp 0.8s 0.8s forwards;
+}
+
+/* === CATEGORIES === */
+.categories { padding:6rem 4rem; max-width:1200px; margin:0 auto; }
+.categories-header { margin-bottom:4rem; }
+.section-label {
+  font-size:0.7rem; letter-spacing:0.35em; color:var(--gold); margin-bottom:1rem;
+}
+.section-title {
+  font-family:'ZCOOL XiaoWei',serif; font-size:clamp(2rem,4vw,3rem);
+  font-weight:400; letter-spacing:0.06em; line-height:1.4;
+}
+.cat-grid {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:2rem;
+}
+.cat-card {
+  border:1px solid var(--umber-10); padding:0; overflow:hidden;
+  transition:all 0.4s; position:relative;
+}
+.cat-card:hover { border-color:var(--gold); }
+.cat-card-img {
+  height:220px; position:relative; overflow:hidden;
+}
+.cat-card:nth-child(1) .cat-card-img {
+  background:linear-gradient(135deg,#442117 0%,#6b3a2a 50%,#442117 100%);
+}
+.cat-card:nth-child(2) .cat-card-img {
+  background:linear-gradient(135deg,#bda382 0%,#d4c4a8 50%,#bda382 100%);
+}
+.cat-card:nth-child(3) .cat-card-img {
+  background:linear-gradient(135deg,#cab0a5 0%,#e0cfc8 50%,#cab0a5 100%);
+}
+.cat-card:nth-child(4) .cat-card-img {
+  background:linear-gradient(135deg,#b7b7a7 0%,#d0d0c4 50%,#b7b7a7 100%);
+}
+.cat-card-img-label {
+  position:absolute; bottom:1.5rem; left:1.5rem;
+  font-family:'Ma Shan Zheng',cursive; font-size:2.5rem;
+  color:rgba(255,255,255,0.15); line-height:1;
+}
+.cat-card-body { padding:2rem; }
+.cat-card-num {
+  font-size:0.65rem; letter-spacing:0.2em; color:var(--umber-30); margin-bottom:0.8rem;
+}
+.cat-card-title {
+  font-family:'ZCOOL XiaoWei',serif; font-size:1.25rem;
+  letter-spacing:0.06em; margin-bottom:0.6rem;
+}
+.cat-card-text {
+  font-size:0.85rem; line-height:1.9; color:var(--umber-60); font-weight:300;
+}
+
+/* === CASES === */
+.cases { padding:6rem 4rem; background:var(--umber); color:var(--parchment); }
+.cases .section-label { color:var(--gold); }
+.cases-inner { max-width:1200px; margin:0 auto; }
+.cases-header { margin-bottom:4rem; }
+.cases-grid { display:flex; flex-direction:column; gap:4rem; }
+.case-item {
+  display:grid; grid-template-columns:1.2fr 1fr; gap:4rem; align-items:center;
+}
+.case-item:nth-child(even) { grid-template-columns:1fr 1.2fr; }
+.case-item:nth-child(even) .case-img { order:2; }
+.case-img {
+  height:320px; position:relative; overflow:hidden;
+  border:1px solid rgba(189,163,130,0.2);
+}
+.case-item:nth-child(1) .case-img {
+  background:
+    radial-gradient(ellipse at 30% 40%,rgba(189,163,130,0.2),transparent 60%),
+    linear-gradient(135deg,rgba(68,33,23,0.8),rgba(50,28,18,0.95));
+}
+.case-item:nth-child(2) .case-img {
+  background:
+    radial-gradient(ellipse at 70% 30%,rgba(202,176,165,0.2),transparent 60%),
+    linear-gradient(135deg,rgba(50,28,18,0.95),rgba(68,33,23,0.8));
+}
+.case-item:nth-child(3) .case-img {
+  background:
+    radial-gradient(ellipse at 50% 50%,rgba(183,183,167,0.15),transparent 50%),
+    linear-gradient(135deg,rgba(68,33,23,0.85),rgba(60,30,20,0.95));
+}
+.case-img-text {
+  position:absolute; bottom:2rem; left:2rem;
+  font-family:'Ma Shan Zheng',cursive; font-size:3rem;
+  color:rgba(233,224,210,0.08); line-height:1;
+}
+.case-tag {
+  font-size:0.65rem; letter-spacing:0.3em; color:var(--gold);
+  display:flex; align-items:center; gap:0.8rem; margin-bottom:1.5rem;
+}
+.case-tag::before { content:''; width:20px; height:1px; background:var(--gold); }
+.case-title {
+  font-family:'ZCOOL XiaoWei',serif; font-size:1.6rem;
+  letter-spacing:0.06em; margin-bottom:1rem; line-height:1.4;
+}
+.case-desc {
+  font-size:0.88rem; line-height:1.9; opacity:0.6; font-weight:300; max-width:400px;
+}
+
+/* === FOOTER === */
+.footer {
+  background:var(--umber); border-top:1px solid rgba(189,163,130,0.1);
+  padding:3rem 4rem; display:flex; justify-content:space-between; align-items:center;
+  color:rgba(233,224,210,0.3); font-size:0.75rem; letter-spacing:0.1em;
+}
+.footer-logo { font-family:'Ma Shan Zheng',cursive; font-size:1.2rem; color:rgba(233,224,210,0.4); }
+.footer-links { display:flex; gap:2rem; }
+.footer-links a { transition:color 0.3s; }
+.footer-links a:hover { color:var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.reveal { opacity:0; transform:translateY(40px); transition:all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.1s; }
+.reveal-delay-2 { transition-delay:0.2s; }
+.reveal-delay-3 { transition-delay:0.3s; }
+
+@media(max-width:900px){
+  .page-hero { padding:8rem 2rem 4rem; }
+  .categories { padding:4rem 2rem; }
+  .cat-grid { grid-template-columns:1fr; }
+  .cases { padding:4rem 2rem; }
+  .case-item, .case-item:nth-child(even) { grid-template-columns:1fr; gap:2rem; }
+  .case-item:nth-child(even) .case-img { order:0; }
+  .case-img { height:220px; }
+  .footer { flex-direction:column; gap:1.5rem; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index_db6433b0.html" class="nav-logo"><img src="衍新拾遗填充logo改.svg" alt="衍新拾遗"></a>
+  <div class="nav-links">
+    <a href="index_db6433b0.html">首页</a>
+    <a href="products_1b8e14e5.html" class="active">核心项目</a>
+    <a href="culture_24083ab3.html">公司文化</a>
+    <a href="index_db6433b0.html#philosophy">品牌理念</a>
+    <a href="index_db6433b0.html#contact" class="nav-cta">联系合作</a>
+  </div>
+  <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-label">核心项目 · 文创产品线</div>
+  <h1 class="page-hero-title">数字化<span class="accent">非遗文创</span></h1>
+  <p class="page-hero-desc">
+    将传统纹样、技法与现代设计语言融合，创造兼具文化深度与当代审美的数字文创产品。
+  </p>
+  <div class="page-hero-divider"></div>
+</section>
+
+<!-- PRODUCT CATEGORIES -->
+<section class="categories">
+  <div class="categories-header">
+    <div class="section-label reveal">产品矩阵</div>
+    <h2 class="section-title reveal reveal-delay-1">四大产品类别</h2>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card reveal">
+      <div class="cat-card-img"><div class="cat-card-img-label">藏</div></div>
+      <div class="cat-card-body">
+        <div class="cat-card-num">01</div>
+        <div class="cat-card-title">数字藏品</div>
+        <div class="cat-card-text">基于非遗技艺创作的限量数字藏品，以区块链技术确权，让传统艺术在数字世界焕发新的收藏价值。</div>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-1">
+      <div class="cat-card-img"><div class="cat-card-img-label">纹</div></div>
+      <div class="cat-card-body">
+        <div class="cat-card-num">02</div>
+        <div class="cat-card-title">纹样数据库</div>
+        <div class="cat-card-text">系统采集、数字化整理各地非遗纹样，构建可检索、可授权的纹样素材库，服务设计师与品牌方。</div>
+      </div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-card-img"><div class="cat-card-img-label">授</div></div>
+      <div class="cat-card-body">
+        <div class="cat-card-num">03</div>
+        <div class="cat-card-title">IP 授权</div>
+        <div class="cat-card-text">非遗主题原创IP的开发与授权体系，与品牌跨界合作，将非遗元素融入消费品与商业空间。</div>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-1">
+      <div class="cat-card-img" style="background: url('文创.jpg') center/cover no-repeat;"><div class="cat-card-img-label">物</div></div>
+      <div class="cat-card-body">
+        <div class="cat-card-num">04</div>
+        <div class="cat-card-title">实体衍生品</div>
+        <div class="cat-card-text">从数字到实体，开发文具、服饰、家居等非遗主题产品线，让传统工艺之美走进日常生活。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE SHOWCASE -->
+<section class="cases">
+  <div class="cases-inner">
+    <div class="cases-header">
+      <div class="section-label reveal">精选案例</div>
+      <h2 class="section-title reveal reveal-delay-1" style="color:var(--parchment)">项目实践</h2>
+    </div>
+    <div class="cases-grid">
+      <div class="case-item reveal">
+        <div class="case-img" style="background: url('顾绣.jpg') center/cover no-repeat;"><div class="case-img-text">绣</div></div>
+        <div>
+          <div class="case-tag">人物记录 · 非遗顾绣</div>
+          <div class="case-title">非遗顾绣人物数字记录计划</div>
+          <div class="case-desc">与国家级非遗“顾绣”代表性传承人钱月芳合作，通过实地拜访与影像采集，系统记录其近半个世纪的刺绣实践与艺术经验。围绕其代表性作品与教学过程，梳理顾绣“以针代笔”的工艺特征与审美体系，并以数字化内容形式呈现。每份记录均附带顾绣历史源流、技法解析及其个人传承故事，构建传统刺绣技艺的当代表达与传播路径。</div>
+        </div>
+      </div>
+      <div class="case-item reveal reveal-delay-1">
+        <div class="case-img" style="background: url('螺钿.jpg') center/cover no-repeat;"><div class="case-img-text">螺</div></div>
+        <div>
+          <div class="case-tag">数字交互 · 非遗螺钿</div>
+          <div class="case-title">非遗 × 数字化</div>
+          <div class="case-desc">以螺钿技艺为核心，通过线下手作实践与数字化交互展示相结合的方式，系统呈现其材料特性与制作流程。围绕选材、打磨与镶嵌等关键环节，设计参与式体验内容，引导同学在实践中理解螺钿工艺的技法逻辑与审美特征；同时整合数字化展示，对螺钿纹样演变、工艺步骤及典型案例进行结构化梳理与呈现。每项体验内容均配套工艺解读与文化背景说明，构建传统手工艺的多维度传播路径。</div>
+        </div>
+      </div>
+      <div class="case-item reveal reveal-delay-2">
+        <div class="case-img" style="background: url('文创.jpg') center/cover no-repeat;"><div class="case-img-text">瓷</div></div>
+        <div>
+          <div class="case-tag">实体衍生 · 日用器物</div>
+          <div class="case-title">非遗转译 · 品牌文创开发计划</div>
+          <div class="case-desc">以传统非遗元素为核心资源，结合当代设计语言与数字化手段，对经典纹样与工艺符号进行系统化提炼与再设计。围绕产品形态、视觉识别与使用场景，开发具有文化内涵与市场适配性的文创系列，并通过数字化展示与传播渠道强化品牌叙事。每件文创产品均配套非遗背景说明与设计转译逻辑，构建传统文化在当代语境中的可持续表达与品牌化路径。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">衍新拾遗</div>
+  <div style="font-size:0.72rem;letter-spacing:0.08em;">以数字之力 · 守非遗之魂</div>
+  <div class="footer-links">
+    <a href="index_db6433b0.html">返回首页</a>
+    <a href="culture_24083ab3.html">公司文化</a>
+  </div>
+  <div>&copy; 2024 衍新慧研（上海）互联网技术有限责任公司 版权所有</div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold:0.15, rootMargin:'0px 0px -50px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.querySelector('.nav-links');
+if(navToggle){
+  navToggle.addEventListener('click',()=>{
+    if(navLinks.style.display==='flex'){ navLinks.style.display='none'; }
+    else {
+      navLinks.style.display='flex'; navLinks.style.flexDirection='column';
+      navLinks.style.position='fixed'; navLinks.style.inset='0';
+      navLinks.style.background='rgba(233,224,210,0.97)';
+      navLinks.style.justifyContent='center'; navLinks.style.alignItems='center';
+      navLinks.style.zIndex='999'; navLinks.style.gap='2rem';
+    }
+  });
+}
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
