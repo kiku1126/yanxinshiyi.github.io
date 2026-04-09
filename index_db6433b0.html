@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>衍新拾遗 — 数字非遗文创</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+/* === CSS VARIABLES === */
+:root {
+  --umber: #442117;
+  --parchment: #e9e0d2;
+  --gold: #bda382;
+  --rose: #cab0a5;
+  --sage: #b7b7a7;
+  --umber-90: rgba(68,33,23,0.9);
+  --umber-60: rgba(68,33,23,0.6);
+  --umber-30: rgba(68,33,23,0.3);
+  --umber-10: rgba(68,33,23,0.1);
+  --gold-40: rgba(189,163,130,0.4);
+  --parchment-80: rgba(233,224,210,0.8);
+}
+
+/* === RESET & BASE === */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  background: var(--parchment);
+  color: var(--umber);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width:100%; display:block; }
+
+/* === TEXTURE OVERLAY === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--parchment); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* === NAVIGATION === */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  padding: 1.5rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.nav.scrolled {
+  background: rgba(233,224,210,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 1rem 4rem;
+  box-shadow: 0 1px 0 var(--umber-10);
+}
+.nav-logo {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.75rem;
+  letter-spacing: 0.15em;
+  color: var(--umber);
+}
+.nav-logo img { height: 100px; width: auto; display: block; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display:flex; gap:2.5rem; align-items:center; }
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--umber-60);
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px;
+  background: var(--gold); transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-links a:hover { color: var(--umber); }
+.nav-links a:hover::after { width:100%; }
+.nav-cta {
+  font-size: 0.8rem !important;
+  padding: 0.6rem 1.8rem;
+  border: 1px solid var(--umber-30);
+  transition: all 0.3s !important;
+}
+.nav-cta:hover {
+  background: var(--umber) !important;
+  color: var(--parchment) !important;
+  border-color: var(--umber) !important;
+}
+
+/* === HERO === */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 8rem 2rem 4rem;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(189,163,130,0.15), transparent),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(202,176,165,0.1), transparent),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(183,183,167,0.08), transparent);
+}
+
+/* ink wash mountains */
+.hero-mountains {
+  position:absolute; bottom:0; left:0; right:0; height:45vh;
+  z-index:1; opacity:0.08;
+}
+.hero-mountains svg { width:100%; height:100%; }
+
+/* floating seal */
+.hero-seal {
+  width: 100px; height: 100px;
+  display: flex; align-items:center; justify-content:center;
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.4rem;
+  color: var(--gold);
+  margin-bottom: 3rem;
+  position: relative;
+  z-index:2;
+  opacity:0; animation: fadeUp 1s 0.3s forwards;
+}
+.hero-seal img { width:88%; height:88%; object-fit:contain; display:block; }
+.hero-seal-fallback { display:none; }
+
+.hero-title {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  position: relative; z-index:2;
+  opacity:0; animation: fadeUp 1s 0.5s forwards;
+}
+.hero-title .accent { color: var(--gold); }
+
+.hero-subtitle {
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-weight: 300;
+  color: var(--umber-60);
+  margin-top: 2rem;
+  letter-spacing: 0.25em;
+  position: relative; z-index:2;
+  opacity:0; animation: fadeUp 1s 0.7s forwards;
+}
+
+.hero-divider {
+  width: 60px; height: 1px;
+  background: var(--gold);
+  margin: 2.5rem auto;
+  position: relative; z-index:2;
+  opacity:0; animation: fadeUp 1s 0.9s forwards;
+}
+
+.hero-desc {
+  max-width: 480px;
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--umber-60);
+  font-weight: 300;
+  position: relative; z-index:2;
+  opacity:0; animation: fadeUp 1s 1.1s forwards;
+}
+
+.hero-scroll {
+  position:absolute; bottom:3rem; left:50%; transform:translateX(-50%);
+  z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+  opacity:0; animation: fadeUp 1s 1.4s forwards;
+}
+.hero-scroll span {
+  font-size:0.7rem; letter-spacing:0.2em; color:var(--umber-30);
+  writing-mode: vertical-rl;
+}
+.hero-scroll-line {
+  width:1px; height:40px; background:var(--umber-30);
+  position:relative; overflow:hidden;
+}
+.hero-scroll-line::after {
+  content:''; position:absolute; top:-100%; left:0; width:1px; height:100%;
+  background:var(--gold);
+  animation: scrollDown 2s infinite;
+}
+
+/* === SECTION COMMON === */
+.section {
+  padding: 8rem 4rem;
+  position: relative;
+}
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+.section-desc {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--umber-60);
+  font-weight: 300;
+  max-width: 560px;
+}
+
+/* === ABOUT === */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.about-content { display:flex; flex-direction:column; gap:1.5rem; }
+.about-visual {
+  position: relative;
+  height: 500px;
+}
+.about-card {
+  position: absolute;
+  background: var(--umber);
+  color: var(--parchment);
+  padding: 2.5rem;
+  width: 320px;
+}
+.about-card:nth-child(1) { top:0; right:0; z-index:2; }
+.about-card:nth-child(2) { bottom:0; left:0; z-index:1; background:var(--gold); color:var(--umber); }
+.about-card-num {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 3rem;
+  opacity: 0.3;
+  line-height:1;
+}
+.about-card-title {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 1.3rem;
+  margin: 1rem 0 0.8rem;
+  letter-spacing: 0.08em;
+}
+.about-card-text {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+/* stats */
+.about-stats {
+  display: flex; gap: 3rem;
+  margin-top: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--umber-10);
+}
+.stat-num {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 2.2rem;
+  color: var(--gold);
+  line-height:1;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--umber-60);
+  letter-spacing: 0.1em;
+  margin-top: 0.4rem;
+}
+
+/* === PROJECTS === */
+.projects { background: var(--umber); color: var(--parchment); }
+.projects .section-label { color: var(--gold); }
+.projects .section-desc { color: rgba(233,224,210,0.6); }
+
+.projects-header {
+  max-width: 1200px; margin: 0 auto 5rem;
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.projects-header-left { max-width: 500px; }
+
+.project-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+}
+.project-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  group: true;
+}
+.project-card-inner {
+  padding: 3rem;
+  height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  z-index:2;
+  border: 1px solid rgba(189,163,130,0.2);
+  transition: border-color 0.4s;
+  min-height: 420px;
+}
+.project-card:hover .project-card-inner {
+  border-color: var(--gold);
+}
+.project-card-bg {
+  position:absolute; inset:0; z-index:0;
+  transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.project-card:first-child .project-card-bg {
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(189,163,130,0.15), transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(202,176,165,0.1), transparent 50%),
+    linear-gradient(135deg, rgba(68,33,23,0.95), rgba(68,33,23,0.85));
+}
+.project-card:last-child .project-card-bg {
+  background:
+    radial-gradient(ellipse at 70% 30%, rgba(183,183,167,0.15), transparent 60%),
+    linear-gradient(135deg, rgba(50,28,18,0.95), rgba(68,33,23,0.9));
+}
+.project-card:hover .project-card-bg { transform: scale(1.05); }
+
+.project-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display:flex; align-items:center; gap:0.8rem;
+}
+.project-tag::before {
+  content:''; width:20px; height:1px; background:var(--gold);
+}
+.project-name {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+  line-height:1.3;
+}
+.project-desc {
+  font-size: 0.88rem;
+  line-height: 1.9;
+  opacity: 0.6;
+  font-weight: 300;
+  max-width: 400px;
+  margin-bottom: 2rem;
+}
+.project-features {
+  display: flex; flex-wrap:wrap; gap: 0.6rem;
+}
+.project-feature {
+  font-size: 0.72rem;
+  padding: 0.4rem 1rem;
+  border: 1px solid rgba(189,163,130,0.3);
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+
+/* decorative Chinese patterns */
+.project-card .deco-corner {
+  position:absolute; width:40px; height:40px; z-index:3;
+  opacity:0.15;
+}
+.deco-corner.tl { top:20px; left:20px; border-top:1px solid var(--gold); border-left:1px solid var(--gold); }
+.deco-corner.br { bottom:20px; right:20px; border-bottom:1px solid var(--gold); border-right:1px solid var(--gold); }
+
+.project-more {
+  display:inline-block; margin-top:1.5rem;
+  font-size:0.8rem; letter-spacing:0.15em; color:var(--gold);
+  padding:0.6rem 0; border-bottom:1px solid rgba(189,163,130,0.3);
+  transition: all 0.3s;
+}
+.project-more:hover { border-bottom-color:var(--gold); padding-left:0.5rem; }
+
+/* === FEATURES === */
+.features-grid {
+  max-width: 1200px; margin: 4rem auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--umber-10);
+}
+.feature-item {
+  background: var(--parchment);
+  padding: 3rem 2.5rem;
+  transition: all 0.4s;
+  position: relative;
+}
+.feature-item:hover {
+  background: rgba(233,224,210,0.5);
+}
+.feature-icon {
+  width: 48px; height: 48px;
+  border: 1px solid var(--gold-40);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom: 2rem;
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+.feature-title {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.8rem;
+}
+.feature-text {
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--umber-60);
+  font-weight: 300;
+}
+.feature-num {
+  position:absolute; top:2rem; right:2rem;
+  font-size: 0.65rem;
+  color: var(--umber-10);
+  letter-spacing: 0.15em;
+}
+
+/* === PHILOSOPHY === */
+.philosophy {
+  text-align: center;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(189,163,130,0.08), transparent);
+}
+.philosophy-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.philosophy-quote {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  color: var(--umber);
+  margin: 3rem 0 2rem;
+}
+.philosophy-attr {
+  font-size: 0.8rem;
+  color: var(--umber-30);
+  letter-spacing: 0.2em;
+}
+
+/* === TIMELINE === */
+.timeline {
+  max-width: 800px;
+  margin: 5rem auto 0;
+  position: relative;
+}
+.timeline::before {
+  content:''; position:absolute; left:50%; top:0; bottom:0;
+  width:1px; background:var(--umber-10);
+  transform:translateX(-50%);
+}
+.timeline-item {
+  display:flex; align-items:flex-start;
+  margin-bottom: 3rem;
+  position:relative;
+}
+.timeline-item:nth-child(odd) { flex-direction: row; text-align:right; }
+.timeline-item:nth-child(even) { flex-direction: row-reverse; text-align:left; }
+.timeline-side {
+  flex:1; padding:0 2.5rem;
+}
+.timeline-dot {
+  width:10px; height:10px;
+  border:2px solid var(--gold);
+  background:var(--parchment);
+  border-radius:50%;
+  position:relative; z-index:2;
+  flex-shrink:0;
+  margin-top:0.3rem;
+}
+.timeline-year {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 1.4rem;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.timeline-text {
+  font-size: 0.85rem;
+  color: var(--umber-60);
+  line-height: 1.7;
+  font-weight:300;
+}
+
+/* === CONTACT === */
+.contact {
+  background: var(--umber);
+  color: var(--parchment);
+}
+.contact-inner {
+  max-width: 1200px; margin:0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: start;
+}
+.contact .section-desc { color: rgba(233,224,210,0.5); }
+
+.contact-form { display:flex; flex-direction:column; gap:1.5rem; }
+.form-group { position:relative; }
+.form-group label {
+  font-size:0.7rem; letter-spacing:0.2em; color:var(--gold);
+  display:block; margin-bottom:0.6rem;
+}
+.form-group input,
+.form-group textarea {
+  width:100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(189,163,130,0.3);
+  color: var(--parchment);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.9rem;
+  padding: 0.8rem 0;
+  outline:none;
+  transition: border-color 0.3s;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-bottom-color: var(--gold);
+}
+.form-group textarea { resize:none; min-height:100px; }
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(233,224,210,0.3);
+}
+.form-submit {
+  align-self: flex-start;
+  padding: 1rem 3rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.4s;
+  margin-top: 1rem;
+}
+.form-submit:hover {
+  background: var(--gold);
+  color: var(--umber);
+}
+
+.contact-info { padding-top: 1rem; }
+.contact-info-item {
+  margin-bottom: 2.5rem;
+}
+.contact-info-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.contact-info-value {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.8;
+  opacity: 0.7;
+}
+
+/* === FOOTER === */
+.footer {
+  background: var(--umber);
+  border-top: 1px solid rgba(189,163,130,0.1);
+  padding: 3rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(233,224,210,0.3);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+.footer-logo {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.2rem;
+  color: rgba(233,224,210,0.4);
+}
+.footer-links { display:flex; gap:2rem; }
+.footer-links a { transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold); }
+
+/* === ANIMATIONS === */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes scrollDown {
+  0% { top:-100%; }
+  100% { top:200%; }
+}
+
+/* scroll reveal */
+.reveal {
+  opacity:0; transform:translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity:1; transform:translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .nav { padding:1.2rem 2rem; }
+  .nav.scrolled { padding:0.8rem 2rem; }
+  .nav-links { display:none; }
+  .section { padding: 5rem 2rem; }
+  .about { grid-template-columns:1fr; gap:3rem; }
+  .about-visual { height:350px; }
+  .about-card { width:260px; }
+  .project-grid { grid-template-columns:1fr; }
+  .features-grid { grid-template-columns:1fr; }
+  .contact-inner { grid-template-columns:1fr; gap:3rem; }
+  .projects-header { flex-direction:column; gap:1.5rem; align-items:flex-start; }
+  .footer { flex-direction:column; gap:1.5rem; text-align:center; }
+  .timeline-item,
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    flex-direction:column; text-align:left; align-items:flex-start; padding-left:2rem;
+  }
+  .timeline::before { left:4px; }
+  .timeline-dot { position:absolute; left:-1px; }
+  .timeline-side { padding:0; }
+}
+
+/* === DECORATIVE ELEMENTS === */
+.ink-circle {
+  position:absolute;
+  border-radius:50%;
+  border:1px solid var(--umber-10);
+  pointer-events:none;
+}
+
+/* === MOBILE NAV TOGGLE === */
+.nav-toggle {
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  cursor:pointer;
+  z-index:1001;
+}
+.nav-toggle span {
+  width:24px; height:1px; background:var(--umber);
+  transition: all 0.3s;
+}
+@media (max-width:900px) {
+  .nav-toggle { display:flex; }
+  .nav-logo img { height:36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <a href="index_db6433b0.html" class="nav-logo"><img src="衍新拾遗填充logo改.svg" alt="衍新拾遗"></a>
+  <div class="nav-links">
+    <a href="#about">关于我们</a>
+    <a href="#projects">核心项目</a>
+    <a href="culture_24083ab3.html">公司文化</a>
+    <a href="#philosophy">品牌理念</a>
+    <a href="#contact" class="nav-cta">联系合作</a>
+  </div>
+  <div class="nav-toggle" id="navToggle">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <svg class="hero-mountains" viewBox="0 0 1440 400" preserveAspectRatio="none">
+    <path d="M0,400 L0,280 Q120,180 240,250 Q360,120 480,200 Q600,80 720,180 Q840,60 960,160 Q1080,100 1200,220 Q1320,140 1440,200 L1440,400 Z" fill="rgba(68,33,23,0.6)"/>
+    <path d="M0,400 L0,320 Q180,240 360,300 Q540,200 720,260 Q900,180 1080,280 Q1260,220 1440,280 L1440,400 Z" fill="rgba(68,33,23,0.4)"/>
+    <path d="M0,400 L0,350 Q200,300 400,340 Q600,280 800,330 Q1000,290 1200,350 Q1350,310 1440,340 L1440,400 Z" fill="rgba(68,33,23,0.25)"/>
+  </svg>
+
+  <div class="hero-seal">
+    <img src="衍新拾遗填充logo纯logo无文字.png" alt="衍新" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <span class="hero-seal-fallback">衍新</span>
+  </div>
+  <h1 class="hero-title">衍新拾遗<br><span class="accent">古韵新生</span></h1>
+  <p class="hero-subtitle">以数字之力 · 守非遗之魂</p>
+  <div class="hero-divider"></div>
+  <p class="hero-desc">
+    我们致力于将中国非物质文化遗产与数字技术深度融合，
+    通过文创产品与沉浸式游戏体验，让古老技艺焕发新的生命力。
+  </p>
+
+  <div class="hero-scroll">
+    <span>向下探索</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="about">
+    <div class="about-content">
+      <div class="section-label reveal">关于我们</div>
+      <h2 class="section-title reveal reveal-delay-1">根植非遗沃土<br>创造数字新生</h2>
+      <p class="section-desc reveal reveal-delay-2">
+        我们是一支融合文化研究、数字艺术与游戏开发的创新团队。
+        深入田野调研，与非遗传承人紧密合作，将濒临失传的技艺转化为
+        可交互、可体验、可传播的数字内容，让每一份文化记忆都能被看见、被触摸、被铭记。
+      </p>
+      <div class="about-stats reveal reveal-delay-3">
+        <div class="stat">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">合作非遗项目</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">12</div>
+          <div class="stat-label">省份覆盖</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">200万</div>
+          <div class="stat-label">用户触达</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual reveal reveal-delay-2">
+      <div class="about-card">
+        <div class="about-card-num">01</div>
+        <div class="about-card-title">数字化保护</div>
+        <div class="about-card-text">
+          运用3D扫描、动作捕捉与AI技术，
+          为非遗技艺建立永久的数字档案。
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-num">02</div>
+        <div class="about-card-title">活态化传承</div>
+        <div class="about-card-text">
+          通过游戏互动与文创产品，
+          让年轻一代成为非遗的参与者与传播者。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section projects" id="projects">
+  <div class="projects-header">
+    <div class="projects-header-left">
+      <div class="section-label reveal">核心项目</div>
+      <h2 class="section-title reveal reveal-delay-1" style="color:var(--parchment)">两大产品线<br>双轨并行</h2>
+    </div>
+    <p class="section-desc reveal reveal-delay-2">
+      以文创为载体传递美学，以游戏为媒介传递知识，
+      构建完整的非遗数字化生态。
+    </p>
+  </div>
+
+  <div class="project-grid">
+    <div class="project-card reveal">
+      <div class="project-card-bg"></div>
+      <div class="deco-corner tl"></div>
+      <div class="deco-corner br"></div>
+      <div class="project-card-inner">
+        <div class="project-tag">文创产品线</div>
+        <h3 class="project-name">数字化<br>非遗文创</h3>
+        <p class="project-desc">
+          将传统纹样、技法与现代设计语言融合，
+          创造兼具文化深度与当代审美的数字文创产品。
+          从数字藏品到实体衍生，构建完整的非遗文创产品矩阵。
+        </p>
+        <div class="project-features">
+          <span class="project-feature">数字藏品</span>
+          <span class="project-feature">纹样数据库</span>
+          <span class="project-feature">IP 授权</span>
+          <span class="project-feature">实体衍生品</span>
+        </div>
+        <a href="products_1b8e14e5.html" class="project-more">了解更多 →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-card-bg"></div>
+      <div class="deco-corner tl"></div>
+      <div class="deco-corner br"></div>
+      <div class="project-card-inner">
+        <div class="project-tag">游戏产品线</div>
+        <h3 class="project-name">非遗<br>主题网游</h3>
+        <p class="project-desc">
+          以村庄经营建造为主线，融入AVG非遗关卡，
+          在游戏叙事中体验传统工艺的魅力。
+        </p>
+        <div class="project-features">
+          <span class="project-feature">村庄经营</span>
+          <span class="project-feature">AVG 剧情</span>
+          <span class="project-feature">非遗关卡</span>
+          <span class="project-feature">文化探索</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div style="text-align:center; max-width:600px; margin:0 auto 1rem;">
+    <div class="section-label reveal">服务能力</div>
+    <h2 class="section-title reveal reveal-delay-1">六维能力体系</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-item reveal">
+      <div class="feature-num">01</div>
+      <div class="feature-icon">研</div>
+      <div class="feature-title">田野调研</div>
+      <div class="feature-text">深入各地非遗传承地，记录原生态技艺与文化脉络，建立一手资料库。</div>
+    </div>
+    <div class="feature-item reveal reveal-delay-1">
+      <div class="feature-num">02</div>
+      <div class="feature-icon">数</div>
+      <div class="feature-title">数字建档</div>
+      <div class="feature-text">3D扫描、动作捕捉、高清影像，为非遗技艺构建永久的数字化档案。</div>
+    </div>
+    <div class="feature-item reveal reveal-delay-2">
+      <div class="feature-num">03</div>
+      <div class="feature-icon">创</div>
+      <div class="feature-title">创意设计</div>
+      <div class="feature-text">传统元素与当代设计语言融合，打造具有市场竞争力的文创产品。</div>
+    </div>
+    <div class="feature-item reveal reveal-delay-1">
+      <div class="feature-num">04</div>
+      <div class="feature-icon">游</div>
+      <div class="feature-title">游戏开发</div>
+      <div class="feature-text">以非遗为题材的沉浸式游戏体验，寓教于乐，让文化传承自然发生。</div>
+    </div>
+    <div class="feature-item reveal reveal-delay-2">
+      <div class="feature-num">05</div>
+      <div class="feature-icon">运</div>
+      <div class="feature-title">品牌运营</div>
+      <div class="feature-text">社交媒体矩阵搭建，非遗IP孵化与授权体系，持续扩大文化影响力。</div>
+    </div>
+    <div class="feature-item reveal reveal-delay-3">
+      <div class="feature-num">06</div>
+      <div class="feature-icon">展</div>
+      <div class="feature-title">数字展陈</div>
+      <div class="feature-text">VR/AR沉浸式展览方案，让非遗走出博物馆，走进大众日常生活。</div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="section philosophy" id="philosophy">
+  <div class="philosophy-content">
+    <div class="section-label reveal">品牌理念</div>
+    <div class="philosophy-quote reveal reveal-delay-1">
+      择一事而终一生<br>以数字之笔<br>续写千年匠心
+    </div>
+    <div class="philosophy-attr reveal reveal-delay-2">— 衍新拾遗 · 品牌宣言</div>
+  </div>
+
+  <div class="timeline reveal reveal-delay-3">
+    <div class="timeline-item">
+      <div class="timeline-side">
+        <div class="timeline-year">2025.10</div>
+        <div class="timeline-text">团队成立，启动首批非遗数字化田野调研</div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-side"></div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-side">
+        <div class="timeline-year">2025.12</div>
+        <div class="timeline-text">发布数字非遗文创产品线，完成12个非遗项目建档</div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-side"></div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-side">
+        <div class="timeline-year">2026.1</div>
+        <div class="timeline-text">非遗主题网络游戏立项，启动村庄经营+AVG核心玩法研发</div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-side"></div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-side">
+        <div class="timeline-year">2026.4</div>
+        <div class="timeline-text">游戏首次公测，文创产品线拓展至全国合作伙伴网络</div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-side"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-label reveal">联系合作</div>
+      <h2 class="section-title reveal reveal-delay-1" style="color:var(--parchment)">共创非遗<br>数字未来</h2>
+      <p class="section-desc reveal reveal-delay-2">
+        无论您是非遗传承人、文化机构、品牌方还是投资者，
+        我们期待与您携手，共同探索非遗数字化的无限可能。
+      </p>
+    </div>
+    <div>
+      <form class="contact-form" onsubmit="event.preventDefault()">
+        <div class="form-group reveal">
+          <label>姓名</label>
+          <input type="text" placeholder="请输入您的姓名">
+        </div>
+        <div class="form-group reveal reveal-delay-1">
+          <label>邮箱</label>
+          <input type="email" placeholder="请输入您的邮箱">
+        </div>
+        <div class="form-group reveal reveal-delay-2">
+          <label>合作意向</label>
+          <input type="text" placeholder="文创合作 / 游戏联运 / 品牌授权 / 其他">
+        </div>
+        <div class="form-group reveal reveal-delay-3">
+          <label>详细说明</label>
+          <textarea placeholder="请简要描述您的合作意向..."></textarea>
+        </div>
+        <button class="form-submit reveal reveal-delay-4" type="submit">提交意向</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">衍新拾遗</div>
+  <div style="font-size:0.72rem; letter-spacing:0.08em;">
+    以数字之力 · 守非遗之魂
+  </div>
+  <div class="footer-links">
+    <a href="#">微信公众号</a>
+    <a href="#">微博</a>
+    <a href="#">小红书</a>
+  </div>
+  <div>&copy; 2024 衍新慧研（上海）互联网技术有限责任公司 版权所有</div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const st = window.scrollY;
+  nav.classList.toggle('scrolled', st > 80);
+  lastScroll = st;
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+reveals.forEach(el => observer.observe(el));
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+
+// Parallax on hero mountains
+window.addEventListener('scroll', () => {
+  const mountains = document.querySelector('.hero-mountains');
+  if (mountains) {
+    const y = window.scrollY;
+    mountains.style.transform = `translateY(${y * 0.3}px)`;
+  }
+});
+
+// Mobile nav toggle (simple)
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.querySelector('.nav-links');
+if (navToggle) {
+  navToggle.addEventListener('click', () => {
+    if (navLinks.style.display === 'flex') {
+      navLinks.style.display = 'none';
+    } else {
+      navLinks.style.display = 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'fixed';
+      navLinks.style.top = '0';
+      navLinks.style.left = '0';
+      navLinks.style.right = '0';
+      navLinks.style.bottom = '0';
+      navLinks.style.background = 'rgba(233,224,210,0.97)';
+      navLinks.style.justifyContent = 'center';
+      navLinks.style.alignItems = 'center';
+      navLinks.style.zIndex = '999';
+      navLinks.style.gap = '2rem';
+    }
+  });
+}
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
